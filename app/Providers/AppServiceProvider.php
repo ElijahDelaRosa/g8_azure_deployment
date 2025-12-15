@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Http\Request;
 use App\Services\EmailService;
 use App\Contracts\EmailServiceInterface;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,5 +36,8 @@ class AppServiceProvider extends ServiceProvider
             $key = optional($request->user())->id ?: $request->ip();
             return Limit::perMinute(60)->by($key);
         });
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
