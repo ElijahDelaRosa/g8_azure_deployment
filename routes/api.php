@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\Homeowner\HomeownerJobOfferController;
 use App\Http\Controllers\Api\ServiceController;
 use App\Http\Controllers\Api\JobOfferController;
 use App\Http\Controllers\PaymentController; 
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Api\TradieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookingController;
@@ -24,7 +24,7 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 });
 
 // Homeowner Authentication Routes
-Route::prefix('homeowner')->group(function () {
+Route::prefix('homeowner')->middleware('throttle:api')->group(function () {
     Route::post('register', [HomeownerAuthController::class, 'register']);
     Route::post('login', [HomeownerAuthController::class, 'login']);
     Route::post('reset-password-request', [HomeownerAuthController::class, 'resetPasswordRequest']);
@@ -44,6 +44,10 @@ Route::prefix('homeowner')->group(function () {
         Route::put('/reset-password', [HomeownerAuthController::class, 'resetPassword']);
         Route::post('logout', [HomeownerAuthController::class, 'logout']);
         Route::get('me', [HomeownerAuthController::class, 'me']);
+        
+        // Tradie browsing routes
+        Route::get('tradies', [TradieController::class, 'index']); // Fetch tradies with filters
+        Route::get('tradies/{id}', [TradieController::class, 'show']); // Fetch single tradie
     });
 });
 
@@ -53,7 +57,7 @@ Route::prefix('user')->group(function () {
 });
 
 // Tradie Authentication Routes
-Route::prefix('tradie')->group(function () {
+Route::prefix('tradie')->middleware('throttle:api')->group(function () {
     Route::post('register', [TradieAuthController::class, 'register']);
     Route::post('login', [TradieAuthController::class, 'login']);
     Route::post('reset-password-request', [TradieAuthController::class, 'resetPasswordRequest']);
