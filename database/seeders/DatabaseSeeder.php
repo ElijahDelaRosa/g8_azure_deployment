@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
     {
 
         User::factory()->create([
-            'first_name' => 'Eizler ',
-            'last_name' => 'Martin',   
-            'middle_name' => 'Est',
-            'email' => 'eizlerdylan.martin@lorma.edu',
+            'first_name' => 'admin ',
+            'last_name' => 'admin',   
+            'middle_name' => 'admin',
+            'email' => 'admin@fixo.com',
             'password' => Hash::make("admin"),
             'role' => 'admin',
             'status' => 'active',
@@ -37,6 +37,14 @@ class DatabaseSeeder extends Seeder
             'status' => 'active',
         ]);
 
+        Tradie::factory()->create([
+            'first_name' => 'John',
+            'email' => 'john.example@email.com',
+            'phone' => '09987654321',
+            'password' => Hash::make("tradie123"),
+            'status' => 'active'
+        ]);
+
         Payment::factory(20)->create();
         User::factory(10)->create();
         // Seed other users
@@ -47,18 +55,8 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             HomeownerJobOfferSeeder::class,
         ]);
-        Homeowner::factory(10)->create();
-        Tradie::factory(10)->create();
 
         // Seed bookings after homeowners, tradies and services exist
         $this->call(BookingSeeder::class);
-
-        Tradie::factory()->create([
-            'first_name' => 'John',
-            'email' => 'john.example@email.com',
-            'phone' => '09987654321',
-            'password' => Hash::make("tradie123"),
-            'status' => 'active'
-        ]);
     }
 }
